@@ -1,0 +1,2 @@
+/usr/local/hadoop/bin/hadoop jar ~/git/HadoopMapReduce/Datacap-loganalyzer/target/datacap-loganalyzer-0.0.1-SNAPSHOT.jar pt.lucas2010.hadoop.mapreduce.datacap.analyzer.ThreadSegregatorJob ~/DatacapLogsLocal/in/ ~/DatacapLogsLocal/out/
+
