@@ -3,16 +3,20 @@ package pt.lucas2010.hadoop.mapreduce.datacap.analyzer;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.conf.Configured;
 import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
+import org.apache.hadoop.mapreduce.lib.output.MultipleOutputs;
+import org.apache.hadoop.mapreduce.lib.output.SequenceFileOutputFormat;
+import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
 import org.apache.hadoop.util.Tool;
 import org.apache.hadoop.util.ToolRunner;
 
 /* Find thread restart logs to produce a timeline */
-public class ThreadSegreagatorJob extends Configured implements Tool {
-  private ThreadSegreagatorJob() {}                               // singleton
+public class ThreadSegregatorJob extends Configured implements Tool {
+  private ThreadSegregatorJob() {}                               // singleton
 
   public int run(String[] args) throws Exception {
     if (args.length < 2) {
@@ -35,7 +39,7 @@ public class ThreadSegreagatorJob extends Configured implements Tool {
     try {
       
       threadSegregatorJob.setJobName("threadSegregator-");
-  	  threadSegregatorJob.setJarByClass(ThreadSegreagatorJob.class);
+  	  threadSegregatorJob.setJarByClass(ThreadSegregatorJob.class);
 
       FileInputFormat.setInputPaths(threadSegregatorJob, args[0]);
 
@@ -65,6 +69,17 @@ public class ThreadSegreagatorJob extends Configured implements Tool {
 //      sortJob.setSortComparatorClass(          // sort by decreasing freq
 //        LongWritable.DecreasingComparator.class);
 
+      
+//      // Defines additional single text based output 'text' for the job
+//      MultipleOutputs.addNamedOutput(threadSegregatorJob, "text", TextOutputFormat.class,
+//      LongWritable.class, Text.class);
+//
+//      // Defines additional sequence-file based output 'sequence' for the job
+//      MultipleOutputs.addNamedOutput(job, "seq",
+//        SequenceFileOutputFormat.class,
+//        LongWritable.class, Text.class);
+      
+      
       threadSegregatorJob.waitForCompletion(true);
     }
     finally {
@@ -74,7 +89,7 @@ public class ThreadSegreagatorJob extends Configured implements Tool {
   }
 
   public static void main(String[] args) throws Exception {
-    int res = ToolRunner.run(new Configuration(), new ThreadSegreagatorJob(), args);
+    int res = ToolRunner.run(new Configuration(), new ThreadSegregatorJob(), args);
     System.exit(res);
   }
 
